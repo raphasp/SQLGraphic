@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SQLGraphic</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="icon_new">New</string>
+    <string name="title_activity_add_server_data">Add Data of the Server</string>
+	<string name="NameLocal">Name Local of the Server</string>
+	<string name="Hosting">Hosting</string>
+	<string name="Port">Port: 3306</string>
+	<string name="Username">Username</string>
+	<string name="Password">Password</string>
+	<string name="Test">Test</string>
+	<string name="Save">Save</string>
+	<string name="DataBase">DataBase</string>
+	<string name="Description">Description</string>
+	<string name="IconDescription">Icono de descripcion</string>
+</resources>
