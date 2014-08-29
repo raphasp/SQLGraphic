@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/grey"
+    tools:context=".EditActivity" >
+
+    <EditText
+        android:id="@+id/nombreUpdata"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/viewseparatorUpdata"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="@string/NameLocal"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <View
+        android:id="@+id/viewseparatorUpdata"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/nombreUpdata"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/separator" />
+
+       <ScrollView
+           android:id="@+id/scrollViewDataUpdata"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+           android:layout_alignParentLeft="true"
+           android:layout_alignRight="@+id/nombreUpdata"
+           android:layout_marginTop="75dp" >
+
+          <LinearLayout
+               android:id="@+id/linearDataUpdata"
+               android:layout_width="fill_parent"
+               android:layout_height="323dp"
+               android:orientation="vertical" >
+                <EditText
+		           android:id="@+id/hostingUpdata"
+		           android:layout_width="fill_parent"
+		           android:layout_height="wrap_content"
+		           android:layout_marginTop="17dp"
+		           android:ems="10"
+		           android:hint="@string/Hosting"
+		           android:inputType="text" />
+		
+		       <EditText
+		           android:id="@+id/portUpdata"
+		           android:layout_width="fill_parent"
+		           android:layout_height="wrap_content"
+		           android:layout_marginTop="19dp"
+		           android:ems="10"
+		           android:hint="@string/Port"
+		           android:inputType="numberDecimal" />
+		
+		       <EditText
+		           android:id="@+id/usernameUpdata"
+		           android:layout_width="fill_parent"
+		           android:layout_height="wrap_content"
+		           android:layout_marginTop="16dp"
+		           android:ems="10"
+		           android:hint="@string/Username"
+		           android:inputType="text" />
+		
+		       <EditText
+		           android:id="@+id/passwordUpdata"
+		           android:layout_width="fill_parent"
+		           android:layout_height="wrap_content"
+		           android:layout_marginTop="19dp"
+		           android:ems="10"
+		           android:hint="@string/Password"
+		           android:inputType="textPassword" />
+		       
+		       <LinearLayout
+		           android:id="@+id/lineardatabaseUpdata"
+	               android:layout_width="fill_parent"
+	               android:layout_height="match_parent"
+	               android:layout_marginTop="19dp"
+	               android:orientation="horizontal"
+		           >
+
+		           <EditText
+		               android:id="@+id/databaseUpdata"
+		               android:layout_width="0dp"
+		               android:layout_height="match_parent"
+		               android:layout_marginTop="0dp"
+		               android:layout_weight="1"
+		               android:ems="10"
+		               android:hint="@string/DataBase"
+		               android:inputType="text" />
+
+		           <Button
+		               android:id="@+id/btndatabaseUpdata"
+		               android:layout_width="wrap_content"
+		               android:layout_height="wrap_content"
+		               android:background="@drawable/btndtabase" />
+		           
+		       </LinearLayout>
+		 
+		       <EditText
+		           android:id="@+id/descriptionUpdata"
+		           android:layout_width="fill_parent"
+		           android:layout_height="wrap_content"
+		           android:layout_marginTop="19dp"
+		           android:ems="10"
+		           android:hint="@string/Description"
+		           android:inputType="text" />
+
+           </LinearLayout>
+       </ScrollView>
+
+</RelativeLayout>

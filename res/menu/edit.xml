@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/testConnectionUpdate"
+        android:icon="@drawable/test"
+        android:showAsAction="ifRoom"
+        android:title="@string/Test"/>
+    
+    <item android:id="@+id/updataData"
+        android:icon="@drawable/ic_updata"
+        android:title="@string/Updata"
+        android:showAsAction="ifRoom"/>
+
+</menu>
