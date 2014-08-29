@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class sqldatabse {
 	
+	public static final String TAG="sqldatabade";
+	
 	public static final String ID_Server="_idserver";
 	public static final String NAME_Server="name";
 	public static final String HOST_Server="host";
@@ -25,7 +27,7 @@ public class sqldatabse {
 	private static final String N_DB="ServerINF";
 	private static final String N_TABLAServer="DataServer";
 	private static final String N_TABLASentence="Sentence";
-	private static int VERSION_DB= 1;
+	private static int VERSION_DB= 2;
 	
 	private BDHelper nHelper;
 	private final Context ncontext;
@@ -47,7 +49,7 @@ public class sqldatabse {
 				HOST_Server + " TEXT NOT NULL, " + 
 				PORT_Server + " TEXT NOT NULL, " + 
 				USERNAME_Server + " TEXT NOT NULL, " + 
-				PASSWORD_Server + " TEXT , " + 
+				PASSWORD_Server + " TEXT, " + 
 				DATABASE_Server + " TEXT, " + 
 				DESCRIPTION_Server + " TEXT );"
 			);

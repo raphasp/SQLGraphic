@@ -2,4 +2,8 @@
 <resources>
     <color name="titlebar">#83b1bc</color>
     <color name="separator">#009bdb</color>
+    <color name="hident">#454545</color>
+    <drawable name="red_color">#ff0000</drawable>
+ 	<drawable name="white_color">#ffffff</drawable>
+ 	<drawable name="orange_color">#ffffbb33</drawable>
 </resources>

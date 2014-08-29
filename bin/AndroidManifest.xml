@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -25,6 +27,14 @@
         <activity
             android:name="think.sqlgraphic.AddServerData"
             android:label="@string/title_activity_add_server_data"
+            android:parentActivityName="think.sqlgraphic.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="think.sqlgraphic.StartActivity" />
+        </activity>
+        <activity
+            android:name="think.sqlgraphic.EditActivity"
+            android:label="@string/title_activity_edit"
             android:parentActivityName="think.sqlgraphic.StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
