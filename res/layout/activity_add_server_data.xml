@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:ems="10"
         android:hint="@string/NameLocal"
-        android:inputType="text" >
+        android:inputType="text"
+        android:textColor="@color/textColor" >
 
         <requestFocus />
     </EditText>
@@ -53,6 +54,7 @@
 		           android:layout_marginTop="17dp"
 		           android:ems="10"
 		           android:hint="@string/Hosting"
+		           android:textColor="@color/textColor"
 		           android:inputType="text" />
 		
 		       <EditText
@@ -62,6 +64,7 @@
 		           android:layout_marginTop="19dp"
 		           android:ems="10"
 		           android:hint="@string/Port"
+		           android:textColor="@color/textColor"
 		           android:inputType="numberDecimal" />
 		
 		       <EditText
@@ -70,6 +73,7 @@
 		           android:layout_height="wrap_content"
 		           android:layout_marginTop="16dp"
 		           android:ems="10"
+		           android:textColor="@color/textColor"
 		           android:hint="@string/Username"
 		           android:inputType="text" />
 		
@@ -79,6 +83,7 @@
 		           android:layout_height="wrap_content"
 		           android:layout_marginTop="19dp"
 		           android:ems="10"
+		           android:textColor="@color/textColor"
 		           android:hint="@string/Password"
 		           android:inputType="textPassword" />
 		       
@@ -97,6 +102,7 @@
 		               android:layout_marginTop="0dp"
 		               android:layout_weight="1"
 		               android:ems="10"
+		               android:textColor="@color/textColor"
 		               android:hint="@string/DataBase"
 		               android:inputType="text" />
 
@@ -114,6 +120,7 @@
 		           android:layout_height="wrap_content"
 		           android:layout_marginTop="19dp"
 		           android:ems="10"
+		           android:textColor="@color/textColor"
 		           android:hint="@string/Description"
 		           android:inputType="text" />
 

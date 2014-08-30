@@ -11,13 +11,15 @@
     <string name="Port">Port: 3306</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
-    
     <string name="Test">Test</string>
     <string name="Save">Save</string>
     <string name="Delete">Delete</string>
     <string name="Edit">Edit</string>
     <string name="Updata">Updata</string>
-    
+    <string name="SQL">SQL</string>
+    <string name="Graphic">Graphic</string>
+    <string name="SaveQuery">Save Query</string>
+    <string name="Execute">Execute Query</string>
     <string name="DataBase">DataBase</string>
     <string name="Description">Description</string>
     <string name="IconDescription">Icono de descripcion</string>
@@ -27,18 +29,22 @@
     <string name="hostname">Host Name</string>
     <string name="hostip">Ip of the Host</string>
     <string name="hostnumber">No.1</string>
-    
     <string name="imgError">Error deleting database list.</string>
     <string name="imgErrorOK">Was deleted from the server database.</string>
-    
     <string name="title_activity_edit">Edit Data of the Server</string>
-    
     <string name="imgErrorUpdata">Error to try load of data of the server.</string>
-	<string name="imgUpdataError">Error updating server data.</string>
-	<string name="imgOkUpdata">Updated the server datat.</string>
-	<string name="imgEmpty">The database field is empty, it is required.</string>
-	<string name="imgExist">The name of the database already exists.</string>
-	
-	<string name="imgOkAddTest">Connection is established with the server.</string>
-	<string name="imgAddErrorTest">Can not connected with server.</string>
+    <string name="imgUpdataError">Error updating server data.</string>
+    <string name="imgOkUpdata">Updated the server datat.</string>
+    <string name="imgEmpty">The database field is empty, it is required.</string>
+    <string name="imgExist">The name of the database already exists.</string>
+    <string name="imgOkAddTest">Connection is established with the server.</string>
+    <string name="imgAddErrorTest">Can not connected with server.</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Query</string>
+    <string name="title_section2">Query Save</string>
+    <string name="title_section3">Disconnect</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+	<string name="SqlSentence">SELECT * FORM TABLE</string>
 </resources>

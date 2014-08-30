@@ -7,8 +7,9 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="18" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.SQL" >
         <activity
-            android:name="think.sqlgraphic.StartActivity"
+            android:name=".StartActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,17 +26,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="think.sqlgraphic.AddServerData"
+            android:name=".AddServerData"
             android:label="@string/title_activity_add_server_data"
-            android:parentActivityName="think.sqlgraphic.StartActivity" >
+            android:parentActivityName=".StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="think.sqlgraphic.StartActivity" />
         </activity>
         <activity
-            android:name="think.sqlgraphic.EditActivity"
+            android:name=".EditActivity"
             android:label="@string/title_activity_edit"
-            android:parentActivityName="think.sqlgraphic.StartActivity" >
+            android:parentActivityName=".StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="think.sqlgraphic.StartActivity" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".StartActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="think.sqlgraphic.StartActivity" />

@@ -114,6 +114,8 @@ public int selectItem=1;
                 CharSequence texto = "Seleccionado: " + elegido.getTextIp();
                 Toast toast = Toast.makeText(StartActivity.this, texto, Toast.LENGTH_LONG);
                 toast.show();
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+    	    	startActivity(intent);	 
 			}
         	
 		});     

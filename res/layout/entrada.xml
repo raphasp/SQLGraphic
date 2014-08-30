@@ -11,6 +11,7 @@
         android:layout_alignTop="@+id/icondatabase"
         android:layout_toRightOf="@+id/icondatabase"
         android:text="@string/hostname"
+        android:textColor="@color/textColor"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -21,6 +22,7 @@
         android:layout_below="@+id/hostname"
         android:layout_toRightOf="@+id/hostnumber"
         android:text="@string/hostip"
+        android:textColor="@color/textColor"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageView
@@ -43,6 +45,7 @@
         android:layout_below="@+id/hostname"
         android:layout_toLeftOf="@+id/hostname"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:textSize="@dimen/numberhost"
         android:text="@string/hostnumber"
         android:textAppearance="?android:attr/textAppearanceSmall" />

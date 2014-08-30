@@ -105,7 +105,8 @@ public class AddServerData extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.testConnection:
-			 textOfConnection();
+			textOfConnection();
+			//AddServerData.this.finish();
 			return true;
 		case R.id.saveData:
 			SaveData_Server();
