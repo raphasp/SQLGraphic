@@ -5,7 +5,12 @@
     <color name="hident">#454545</color>
     <color name="drawernav">#fbfbff</color>
     <color name="textColor">#3b3b3b</color>
+    <color name="tableline">#88b3bf</color>
+    <color name="tablelineColum">#f2f2f2</color>
+    <color name="linegraph">#385860</color>
+    <color name="legend">#b8d9e1</color>
     <drawable name="red_color">#ff0000</drawable>
  	<drawable name="white_color">#ffffff</drawable>
  	<drawable name="orange_color">#ffffbb33</drawable>
+ 	<color name="btnquery">#a9d8e2</color>
 </resources>

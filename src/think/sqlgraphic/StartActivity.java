@@ -2,15 +2,22 @@ package think.sqlgraphic;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.os.AsyncTask;
 //import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -23,7 +30,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class StartActivity extends Activity {
 	
@@ -33,6 +40,7 @@ protected ActionMode mActionMode;
 private DBListViewAdapter mlistAdapter;
 private ArrayList<Lista_entrada> datos;
 public int selectItem=1;
+public int idAux=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +119,25 @@ public int selectItem=1;
         	public void onItemClick(AdapterView<?> pariente, View view, int posicion, long id) {
 				Lista_entrada elegido = (Lista_entrada) pariente.getItemAtPosition(posicion); 
 
-                CharSequence texto = "Seleccionado: " + elegido.getTextIp();
-                Toast toast = Toast.makeText(StartActivity.this, texto, Toast.LENGTH_LONG);
-                toast.show();
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-    	    	startActivity(intent);	 
+                String texto = elegido.getTextNumber();
+                try {
+                	idAux=Integer.parseInt(texto);
+                	//Log.e("RAFASSSS", ""+idAux);
+                	Cursor cursorsearch=dataDB.getRow(idAux);
+                	String hostax,userax,passax,portax;
+                	do {
+						hostax=cursorsearch.getString(2);
+						portax=cursorsearch.getString(3);
+						userax=cursorsearch.getString(4);
+						passax=cursorsearch.getString(5);
+						int ports=Integer.parseInt(portax);
+						//Log.e("cadena",hostax +" "+ ports +" "+ userax +" "+passax);
+						new TaskConnection().execute(new testConection(hostax, userax, passax, ports));
+					} while (cursorsearch.moveToNext());
+                	
+                } catch (Exception e) {
+					e.printStackTrace();
+				}	 
 			}
         	
 		});     
@@ -191,10 +213,9 @@ public int selectItem=1;
 		}
 		
 	}
-*/	
-	
-		
-	 public void AddData(){
+*/		
+
+	public void AddData(){
 	    	Intent intent = new Intent(this, AddServerData.class);
 	    	startActivity(intent);	    	
 	}
@@ -219,12 +240,12 @@ public int selectItem=1;
 		        	try {
 		        		String id=values.getTextNumber();
 		        		long ids=Long.parseLong(id);
-		        		Toast toast = Toast.makeText(StartActivity.this, position+"----"+values.getTextNumber(), Toast.LENGTH_LONG);
-		                toast.show();
+		        		/*Toast toast = Toast.makeText(StartActivity.this, position+"----"+values.getTextNumber(), Toast.LENGTH_LONG);
+		                toast.show();*/
 		        		dataDB.deleteRow(ids);
 						datos.remove(position);
 						//String dateIp=datos.get(position).getTextIp().toString();
-						//dialoMesajeOK();
+						dialoMesajeOK();
 						mlistAdapter.notifyDataSetChanged();
 					} catch (Exception e) {
 						 dialoMesaje();
@@ -267,8 +288,9 @@ public int selectItem=1;
 	
 	public void dialoMesajeOK(){
 		AlertDialog.Builder alertAction=new AlertDialog.Builder(StartActivity.this);
-		LayoutInflater inflater= StartActivity.this.getLayoutInflater();
-		alertAction.setView(inflater.inflate(R.layout.layaur_ok, null));
+		//LayoutInflater inflater= StartActivity.this.getLayoutInflater();
+		alertAction.setTitle(R.string.imgErrorOK);
+		alertAction.setIcon(R.drawable.ic_ok);
 		alertAction.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -279,6 +301,77 @@ public int selectItem=1;
 		});
 		
 		alertAction.show();
+	}
+	
+	private class TaskConnection extends AsyncTask<testConection, Long, JSONArray>{
+
+		private ProgressDialog progressDialog;
+		@Override
+		protected JSONArray doInBackground(testConection... params) {
+			return params[0].TestConection();
+		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			
+			progressDialog=new ProgressDialog(StartActivity.this);
+			progressDialog.setMessage("Connecting to server wait a moment.");
+			progressDialog.show();
+			super.onPreExecute();
+		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(JSONArray result) {
+			boolean resultado=setJsonArrayResultConection(result);
+			if(resultado==true && idAux!=0){
+				progressDialog.dismiss();
+				//Toast.makeText(StartActivity.this, ""+idAux, Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getBaseContext(), MainActivity.class);
+				intent.putExtra("keyId", idAux);
+    	    	startActivity(intent);
+			}
+			else{
+				progressDialog.dismiss();
+				message_ConnectionError();
+			}
+			super.onPostExecute(result);
+		}
+
+		private boolean setJsonArrayResultConection(JSONArray result) {
+			boolean resultado=false;
+			if (result!=null) {
+					JSONObject objectJson=null;
+					try {
+						objectJson=result.getJSONObject(0);
+						
+						String title=objectJson.getString("titulo");
+						//Log.e("Resultado", ""+title);
+						if ("MySQLError".equals(title) || "EmptyError".equals(title)) {
+							resultado=false;
+						}else{
+							resultado=true;
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+			}else{
+				resultado=false;
+			}
+				
+			return resultado;
+		}
+		
+	}
+	
+	private void message_ConnectionError(){
+		ConnectionErrorMessage errormessage=new ConnectionErrorMessage();
+		errormessage.show(getFragmentManager(), "Error Conection");
 	}
 
 }

@@ -5,15 +5,18 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.Toast;
+//import android.view.LayoutInflater;
+//import android.widget.Toast;
 
 public class dialogAlertSQL extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-		LayoutInflater inflater=getActivity().getLayoutInflater();
-		builder.setView(inflater.inflate(R.layout.fieldempty, null));
+		builder.setIcon(R.drawable.ic_alert);
+		builder.setTitle("Alert!");
+		builder.setMessage(R.string.imgEmpty);
+		/*LayoutInflater inflater=getActivity().getLayoutInflater();
+		builder.setView(inflater.inflate(R.layout.fieldempty, null));*/
 		builder.setPositiveButton(R.string.ok_Save, new DialogInterface.OnClickListener() {
 			
 			@Override

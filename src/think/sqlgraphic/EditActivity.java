@@ -273,7 +273,7 @@ public class EditActivity extends Activity {
 
 		@Override
 		protected JSONArray doInBackground(testConection... params) {
-			return params[0].TestConectinString();
+			return params[0].dataBaseAll();
 		}
 
 				@Override

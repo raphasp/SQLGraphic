@@ -2,49 +2,68 @@
 <resources>
 
     <string name="app_name">SQLGraphic</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="icon_new">New</string>
-    <string name="title_activity_add_server_data">Add Data of the Server</string>
-    <string name="NameLocal">Name Local of the Server</string>
+    <string name="icon_new">Nuevo</string>
+    <string name="title_activity_add_server_data">Agregar datos al servidor.</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="NameLocal">Nombre local del Servidor</string>
     <string name="Hosting">Hosting</string>
-    <string name="Port">Port: 3306</string>
-    <string name="Username">Username</string>
-    <string name="Password">Password</string>
-    <string name="Test">Test</string>
-    <string name="Save">Save</string>
-    <string name="Delete">Delete</string>
-    <string name="Edit">Edit</string>
-    <string name="Updata">Updata</string>
+    <string name="Port">Puertot: 3306</string>
+    <string name="Username">Nombre de Usuario</string>
+    <string name="Password">Contraseña</string>
+    <string name="Test">Prueba</string>
+    <string name="Save">Guardar</string>
+    <string name="Delete">Eliminar</string>
+    <string name="Edit">Editar</string>
+    <string name="Updata">Actulizar</string>
     <string name="SQL">SQL</string>
     <string name="Graphic">Graphic</string>
-    <string name="SaveQuery">Save Query</string>
-    <string name="Execute">Execute Query</string>
-    <string name="DataBase">DataBase</string>
-    <string name="Description">Description</string>
+    <string name="SaveQuery">Guardar consulta.</string>
+    <string name="SaveGraph">Guardar gráfica.</string>
+    <string name="UpdataQuery">Actualizar consulta.</string>
+    <string name="Execute">Ejecutar consulta.</string>
+    <string name="DataBase">Base de Datos</string>
+    <string name="Description">Descripción</string>
     <string name="IconDescription">Icono de descripcion</string>
     <string name="dialog_Save">Requiere ingresar el nombre del servidor</string>
-    <string name="title_Save">Field Empty</string>
+    <string name="title_Save">Campos Básios</string>
     <string name="ok_Save">OK</string>
-    <string name="hostname">Host Name</string>
-    <string name="hostip">Ip of the Host</string>
+    <string name="hostname">Nombre del host</string>
+    <string name="hostip">Ip del host</string>
     <string name="hostnumber">No.1</string>
-    <string name="imgError">Error deleting database list.</string>
-    <string name="imgErrorOK">Was deleted from the server database.</string>
-    <string name="title_activity_edit">Edit Data of the Server</string>
-    <string name="imgErrorUpdata">Error to try load of data of the server.</string>
-    <string name="imgUpdataError">Error updating server data.</string>
-    <string name="imgOkUpdata">Updated the server datat.</string>
-    <string name="imgEmpty">The database field is empty, it is required.</string>
-    <string name="imgExist">The name of the database already exists.</string>
-    <string name="imgOkAddTest">Connection is established with the server.</string>
-    <string name="imgAddErrorTest">Can not connected with server.</string>
+    <string name="imgError">Error eliminar la base de datos de la lista.</string>
+    <string name="imgErrorOK">Se elimino el servidor correctamente.</string>
+    <string name="title_activity_edit">Se editaron los datos del servidor correctamente.</string>
+    <string name="imgErrorUpdata">Error, al tratar de cargar los datos del servidor.</string>
+    <string name="imgUpdataError">Error, al tratar de actualizar los datos del servidor.</string>
+    <string name="imgOkUpdata">Actualización de los datos del servidor.</string>
+    <string name="imgEmpty">El campo de base de datos está vacía, se requiere.</string>
+    <string name="imgExist">El nombre de la base de datos ya existe.</string>
+    <string name="imgOkAddTest">La conexión se establecio con el servidor.</string>
+    <string name="imgAddErrorTest">No se puede conectar con el servidor.</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_section1">Query</string>
-    <string name="title_section2">Query Save</string>
-    <string name="title_section3">Disconnect</string>
+    <string name="title_section1">Consulta</string>
+    <string name="title_section2">Guardar Consulta</string>
+    <string name="title_section3">Disconectar</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
 	<string name="SqlSentence">SELECT * FORM TABLE</string>
+	<string name="Spinner">Snippets</string>
+	<string name="Operator">Operator</string>
+	<string name="Tables">Tables</string>
+	<string-array name="SpinnerArray">
+	    <item>SELECT</item>
+		<item>*</item>
+		<item>FROM</item>
+		<item>COUNT()</item>
+		<item>WHERE</item>
+		<item>IN</item>
+		<item>AND</item>
+		<item>OR</item>
+		<item>GROUP BY</item>
+		<item>ORDER BY</item>
+		<item>LIMIT</item>
+	</string-array>
+	<string name="Next">Next</string>
+	<string name="After">After</string>
 </resources>
