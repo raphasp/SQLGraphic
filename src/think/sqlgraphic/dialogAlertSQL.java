@@ -13,7 +13,7 @@ public class dialogAlertSQL extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
 		builder.setIcon(R.drawable.ic_alert);
-		builder.setTitle("Alert!");
+		builder.setTitle("Alerta!");
 		builder.setMessage(R.string.imgEmpty);
 		/*LayoutInflater inflater=getActivity().getLayoutInflater();
 		builder.setView(inflater.inflate(R.layout.fieldempty, null));*/

@@ -1,5 +1,7 @@
 package think.sqlgraphic;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,9 +35,10 @@ public class EditActivity extends Activity {
 	public EditText description;
 	public Button btndatabase;
 	private long id;
-	public JSONArray databaseJSON=null;
+	public JSONObject databaseJSON=null;
 	public String nameserver="";
-
+	public ArrayList<String> databaseList;
+	public int btnclick=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,10 +74,11 @@ public class EditActivity extends Activity {
 					dialogAlertSQL dialog=new dialogAlertSQL();
 					dialog.show(getFragmentManager(), "Alert field Empty");
 				}else{
-					
 					try {
-						Integer.parseInt(Sport);
-						v.showContextMenu();
+						if (btnclick==1) {
+							Integer.parseInt(Sport);
+							v.showContextMenu();
+						}
 					} catch (NumberFormatException e) {
 						AlertNumber numberalert=new AlertNumber();
 						numberalert.show(getFragmentManager(), "Alert Error field");
@@ -174,10 +177,12 @@ public class EditActivity extends Activity {
 	
 	private void message_Updata(){
 		AlertDialog.Builder alertAction=new AlertDialog.Builder(EditActivity.this);
-		LayoutInflater inflater= EditActivity.this.getLayoutInflater();
-		alertAction.setView(inflater.inflate(R.layout.updataok, null));
+		alertAction.setTitle("Mensaje de Confirmación");
+		alertAction.setIcon(R.drawable.ic_ok);
+		alertAction.setMessage(R.string.imgOkUpdata);
+		/*LayoutInflater inflater= EditActivity.this.getLayoutInflater();
+		alertAction.setView(inflater.inflate(R.layout.updataok, null));*/
 		alertAction.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
@@ -189,8 +194,11 @@ public class EditActivity extends Activity {
 	
 	private void message_Load(){
 		AlertDialog.Builder alertAction=new AlertDialog.Builder(EditActivity.this);
-		LayoutInflater inflater= EditActivity.this.getLayoutInflater();
-		alertAction.setView(inflater.inflate(R.layout.errorloaddataupdate, null));
+		alertAction.setTitle("Alerta!");
+		alertAction.setIcon(R.drawable.ic_alert);
+		alertAction.setMessage(R.string.imgErrorUpdata);
+		/*LayoutInflater inflater= EditActivity.this.getLayoutInflater();
+		alertAction.setView(inflater.inflate(R.layout.errorloaddataupdate, null));*/
 		alertAction.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -209,8 +217,11 @@ public class EditActivity extends Activity {
 	
 	private void message_Alert(){
 		AlertDialog.Builder alertAction=new AlertDialog.Builder(EditActivity.this);
-		LayoutInflater inflater= EditActivity.this.getLayoutInflater();
-		alertAction.setView(inflater.inflate(R.layout.updataload, null));
+		alertAction.setTitle("Error");
+		alertAction.setIcon(R.drawable.ic_edit);
+		alertAction.setMessage(R.string.imgUpdataError);
+		/*LayoutInflater inflater= EditActivity.this.getLayoutInflater();
+		alertAction.setView(inflater.inflate(R.layout.updataload, null));*/
 		alertAction.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -224,8 +235,11 @@ public class EditActivity extends Activity {
 	
 	private void message_Exist(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater=EditActivity.this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.updataexist, null));
+		builder.setTitle("Alert!");
+		builder.setIcon(R.drawable.ic_alert);
+		builder.setMessage(R.string.imgExist);
+        /*LayoutInflater inflater=EditActivity.this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.updataexist, null));*/
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -265,7 +279,7 @@ public class EditActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog=new ProgressDialog(EditActivity.this);
-			progressDialog.setMessage("Connecting to server wait a moment.");
+			progressDialog.setMessage("Conectando al servidor. Espere un momento.");
 			progressDialog.show();
 		}
 
@@ -281,7 +295,12 @@ public class EditActivity extends Activity {
 			boolean resultado=setJsonArrayResultConection(result);
 			if(resultado==true){
 				progressDialog.dismiss();
-				databaseJSON=result;
+				try {
+					databaseJSON=result.getJSONObject(0);
+					btnclick=1;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				message_ConnectionOK();
 			}
 			else{
@@ -301,6 +320,19 @@ public class EditActivity extends Activity {
 					if ("MySQLError".equals(title) || "EmptyError".equals(title)) {
 						resultado=false;
 					}else{
+						database.setText("");
+						objectJson=null;
+						for (int i = 1; i < result.length(); i++) {
+							JSONObject objJSON=null;;
+							try {
+								objJSON=result.getJSONObject(i);
+								String Databases=objJSON.getString("Database");
+								databaseList.add(Databases);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						
 						resultado=true;
 					}
 				} catch (JSONException e) {
@@ -312,8 +344,8 @@ public class EditActivity extends Activity {
 			
 		return resultado;
 	}
-
-	@Override
+	
+		@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		database.setText(""+item.getTitle());
 		return super.onContextItemSelected(item);
@@ -325,24 +357,16 @@ public class EditActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (databaseJSON!=null ) {
 			database.setText("");
-			JSONObject objectJson=null;
 			try {
-				objectJson=databaseJSON.getJSONObject(0);
-				String title=objectJson.getString("Database");
+				String title=databaseJSON.getString("Database");
 				if("MySQLErrorData".equals(title)){
-					DialogAlertMessage("Alert", "The server is empty!");
+					DialogAlertMessage("Alerta!", "El servidor no contiene base de datos!");
 					database.setText("");
 				}else{
-					for (int i = 0; i < databaseJSON.length(); i++) {
-						JSONObject objJSON=null;;
-						try {
-							objJSON=databaseJSON.getJSONObject(i);
-							String Databases=objJSON.getString("Database");
-							menu.add(0, v.getId(), 0, Databases);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
+					for (int i = 0; i < databaseList.size(); i++) {
+						String Databases=databaseList.get(i);
+						menu.add(0, v.getId(), 0, Databases);
+					}					
 				}
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -364,6 +388,8 @@ public class EditActivity extends Activity {
 	
 	private void DialogAlertMessage(String title, String message){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(title);
+		builder.setIcon(R.drawable.ic_alert);
         builder.setMessage(message);
         builder.setPositiveButton("OK", null);
         builder.show();

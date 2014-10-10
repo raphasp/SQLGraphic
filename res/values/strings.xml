@@ -16,7 +16,7 @@
     <string name="Edit">Editar</string>
     <string name="Updata">Actulizar</string>
     <string name="SQL">SQL</string>
-    <string name="Graphic">Graphic</string>
+    <string name="Graphic">Gráfica</string>
     <string name="SaveQuery">Guardar consulta.</string>
     <string name="SaveGraph">Guardar gráfica.</string>
     <string name="UpdataQuery">Actualizar consulta.</string>
@@ -36,7 +36,7 @@
     <string name="imgErrorUpdata">Error, al tratar de cargar los datos del servidor.</string>
     <string name="imgUpdataError">Error, al tratar de actualizar los datos del servidor.</string>
     <string name="imgOkUpdata">Actualización de los datos del servidor.</string>
-    <string name="imgEmpty">El campo de base de datos está vacía, se requiere.</string>
+    <string name="imgEmpty">Existen algnos campos que están vacíos, se requiere.</string>
     <string name="imgExist">El nombre de la base de datos ya existe.</string>
     <string name="imgOkAddTest">La conexión se establecio con el servidor.</string>
     <string name="imgAddErrorTest">No se puede conectar con el servidor.</string>
@@ -49,8 +49,8 @@
     <string name="action_example">Example action</string>
 	<string name="SqlSentence">SELECT * FORM TABLE</string>
 	<string name="Spinner">Snippets</string>
-	<string name="Operator">Operator</string>
-	<string name="Tables">Tables</string>
+	<string name="Operator">Operadores</string>
+	<string name="Tables">Tablas</string>
 	<string-array name="SpinnerArray">
 	    <item>SELECT</item>
 		<item>*</item>
@@ -64,6 +64,6 @@
 		<item>ORDER BY</item>
 		<item>LIMIT</item>
 	</string-array>
-	<string name="Next">Next</string>
-	<string name="After">After</string>
+	<string name="Next">Siguiente</string>
+	<string name="After">Anterior</string>
 </resources>

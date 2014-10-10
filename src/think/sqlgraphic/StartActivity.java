@@ -17,11 +17,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +39,7 @@ private DBListViewAdapter mlistAdapter;
 private ArrayList<Lista_entrada> datos;
 public int selectItem=1;
 public int idAux=0;
+public  final static String SER_KEY = "think.sqlgraphic.ser"; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -240,8 +239,6 @@ public int idAux=0;
 		        	try {
 		        		String id=values.getTextNumber();
 		        		long ids=Long.parseLong(id);
-		        		/*Toast toast = Toast.makeText(StartActivity.this, position+"----"+values.getTextNumber(), Toast.LENGTH_LONG);
-		                toast.show();*/
 		        		dataDB.deleteRow(ids);
 						datos.remove(position);
 						//String dateIp=datos.get(position).getTextIp().toString();
@@ -272,8 +269,11 @@ public int idAux=0;
 	
 	public void dialoMesaje(){
 		AlertDialog.Builder alertAction=new AlertDialog.Builder(StartActivity.this);
-		LayoutInflater inflater= StartActivity.this.getLayoutInflater();
-		alertAction.setView(inflater.inflate(R.layout.layaut_alert, null));
+		alertAction.setTitle("Error");
+		alertAction.setIcon(R.drawable.ic_error);
+		alertAction.setMessage(R.string.imgError);
+		/*LayoutInflater inflater= StartActivity.this.getLayoutInflater();
+		alertAction.setView(inflater.inflate(R.layout.layaut_alert, null));*/
 		alertAction.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -308,32 +308,30 @@ public int idAux=0;
 		private ProgressDialog progressDialog;
 		@Override
 		protected JSONArray doInBackground(testConection... params) {
-			return params[0].TestConection();
+			return params[0].dataBaseAllTables();
 		}
-
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onPreExecute()
-		 */
+		
 		@Override
 		protected void onPreExecute() {
 			
 			progressDialog=new ProgressDialog(StartActivity.this);
-			progressDialog.setMessage("Connecting to server wait a moment.");
+			progressDialog.setMessage("Conectando al servidor. Espere un momento.");
 			progressDialog.show();
 			super.onPreExecute();
 		}
-
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
+		
 		@Override
 		protected void onPostExecute(JSONArray result) {
 			boolean resultado=setJsonArrayResultConection(result);
 			if(resultado==true && idAux!=0){
 				progressDialog.dismiss();
-				//Toast.makeText(StartActivity.this, ""+idAux, Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(getBaseContext(), MainActivity.class);
-				intent.putExtra("keyId", idAux);
+				ArrayList<String> base=createDatabase(result);
+				ArrayList<String> tablex=createTableAll(base, result);
+				DataBaseInfo dataBase = new DataBaseInfo(base, tablex, idAux);
+				Intent intent = new Intent(StartActivity.this, MainActivity.class);
+				/*Bundle mBundle=new Bundle();
+				mBundle.putSerializable("infData", dataBase);*/
+				intent.putExtra("infData",dataBase);
     	    	startActivity(intent);
 			}
 			else{
@@ -343,15 +341,60 @@ public int idAux=0;
 			super.onPostExecute(result);
 		}
 
+		private ArrayList<String> createTableAll(ArrayList<String> base,
+				JSONArray result) {
+			ArrayList<String> table=new ArrayList<String>();
+			for (int i = 0; i < base.size(); i++) {
+				String namedb=base.get(i);
+				ArrayList<String> tbaux=new ArrayList<String>();
+				for (int j = 0; j < result.length(); j++) {
+					JSONObject objJSON=null;;
+					try {
+						objJSON=result.getJSONObject(j);
+						String tables=objJSON.getString("Table-"+namedb);
+						tbaux.add(tables);
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				String tbx="";
+				for (int z = 0; z < tbaux.size(); z++) {
+					if (z==(tbaux.size()-1)) {
+						tbx=tbx+tbaux.get(z);
+					}else{
+						tbx=tbx+tbaux.get(z)+"//";
+					}
+				}
+				//Log.d("tbles", tbx);
+				table.add(tbx);
+			}
+			return table;
+		}
+
+		private ArrayList<String> createDatabase(JSONArray result) {
+			ArrayList<String> dbase=new ArrayList<String>();
+			for (int i = 0; i < result.length(); i++) {
+				JSONObject objJSON=null;;
+				try {
+					objJSON=result.getJSONObject(i);
+					String Databases=objJSON.getString("Database");
+					///Log.d("BAse de datos", Databases);
+					dbase.add(Databases);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			return dbase;
+		}
+
 		private boolean setJsonArrayResultConection(JSONArray result) {
 			boolean resultado=false;
 			if (result!=null) {
 					JSONObject objectJson=null;
 					try {
 						objectJson=result.getJSONObject(0);
-						
-						String title=objectJson.getString("titulo");
-						//Log.e("Resultado", ""+title);
+						String title=objectJson.getString("Database");
 						if ("MySQLError".equals(title) || "EmptyError".equals(title)) {
 							resultado=false;
 						}else{

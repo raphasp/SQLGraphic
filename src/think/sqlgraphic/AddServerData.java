@@ -1,8 +1,12 @@
 package think.sqlgraphic;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+//import think.sqlgraphic.R.string;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,8 +32,10 @@ public class AddServerData extends Activity {
 	public EditText database;
 	public EditText description;
 	public Button btndatabase;
-	DBAdapter data_sever;
-	JSONArray databaseJSON=null;
+	public DBAdapter data_sever;
+	public JSONObject databaseJSON=null;
+	public ArrayList<String> databaseList;
+	public int btnclick=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,8 +65,10 @@ public class AddServerData extends Activity {
 					dialog.show(getFragmentManager(), "Alert field Empty");
 				}else{
 					try {
-						Integer.parseInt(Sport);
-						v.showContextMenu();
+						if (btnclick==1) {
+							Integer.parseInt(Sport);
+							v.showContextMenu();
+						}
 					} catch (NumberFormatException e) {
 						AlertNumber numberalert=new AlertNumber();
 						numberalert.show(getFragmentManager(), "Alert Error field");
@@ -105,7 +113,7 @@ public class AddServerData extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.testConnection:
-			textOfConnection();
+				textOfConnection();
 			//AddServerData.this.finish();
 			return true;
 		case R.id.saveData:
@@ -155,10 +163,10 @@ public class AddServerData extends Activity {
 				portAux=Integer.parseInt(Sport);
 				boolean nameExist=data_sever.searchName(Sname);
 				if(nameExist==false){
-					DialogAlertMessage("Alert", "The name of the database already exists.");
+					DialogAlertMessage("Alerta!", "El nombre de la base de datos existe.");
 				}else{
 					data_sever.insertRow(Sname, Shost, portAux, Susername, Spassword, Sdatabase, Sdescription);
-					DialogMessage("Data from the database were saved successfully.");
+					DialogMessage("Los datos del servidor se guardaron correctamente.", "Mesaje de confirmación");
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -171,13 +179,15 @@ public class AddServerData extends Activity {
 	private void DialogAlertMessage(String title, String message){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
+        builder.setIcon(getResources().getDrawable(R.drawable.ic_alert));
         builder.setPositiveButton("OK", null);
         builder.show();
 	}
 	
-	private void DialogMessage(String message){
+	private void DialogMessage(String message, String title){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
+        builder.setIcon(getResources().getDrawable(R.drawable.ic_ok));
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -208,6 +218,7 @@ public class AddServerData extends Activity {
 		ConnectionErrorMessage errormessage=new ConnectionErrorMessage();
 		errormessage.show(getFragmentManager(), "Error Conection");
 	}
+	
 	private class TaskTestConecction extends AsyncTask<testConection, Long, JSONArray>{
 				
 		private ProgressDialog progressDialog;
@@ -216,7 +227,7 @@ public class AddServerData extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog=new ProgressDialog(AddServerData.this);
-			progressDialog.setMessage("Connecting to server wait a moment.");
+			progressDialog.setMessage("Conectando al Servidor. Espere un momento.");
 			progressDialog.show();
 		}
 
@@ -232,7 +243,12 @@ public class AddServerData extends Activity {
 			boolean resultado=setJsonArrayResultConection(result);
 			if(resultado==true){
 				progressDialog.dismiss();
-				databaseJSON=result;
+				try {
+					databaseJSON=result.getJSONObject(0);
+					btnclick=1;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				message_ConnectionOK();
 			}
 			else{
@@ -252,6 +268,19 @@ public class AddServerData extends Activity {
 					if ("MySQLError".equals(title) || "EmptyError".equals(title)) {
 						resultado=false;
 					}else{
+						database.setText("");
+						objectJson=null;
+						for (int i = 1; i < result.length(); i++) {
+							JSONObject objJSON=null;;
+							try {
+								objJSON=result.getJSONObject(i);
+								String Databases=objJSON.getString("Database");
+								databaseList.add(Databases);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						
 						resultado=true;
 					}
 				} catch (JSONException e) {
@@ -282,24 +311,16 @@ public class AddServerData extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (databaseJSON!=null ) {
 			database.setText("");
-			JSONObject objectJson=null;
 			try {
-				objectJson=databaseJSON.getJSONObject(0);
-				String title=objectJson.getString("Database");
+				String title=databaseJSON.getString("Database");
 				if("MySQLErrorData".equals(title)){
-					DialogAlertMessage("Alert", "The server is empty!");
+					DialogAlertMessage("Alerta!", "El servidor no contiene base de datos!");
 					database.setText("");
 				}else{
-					for (int i = 0; i < databaseJSON.length(); i++) {
-						JSONObject objJSON=null;;
-						try {
-							objJSON=databaseJSON.getJSONObject(i);
-							String Databases=objJSON.getString("Database");
-							menu.add(0, v.getId(), 0, Databases);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
+					for (int i = 0; i < databaseList.size(); i++) {
+						String Databases=databaseList.get(i);
+						menu.add(0, v.getId(), 0, Databases);
+					}					
 				}
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -307,9 +328,7 @@ public class AddServerData extends Activity {
 		}else{
 			message_ConnectionError();
 		}
-	}
-
-	
+	}	
 }
 
 
