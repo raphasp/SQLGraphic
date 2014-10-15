@@ -244,5 +244,50 @@ public class testConection {
 
 		return jsonarray;
 	}
+	
+	public JSONArray resultDataGraphicNormal(String query, String database, String colum){
+		String url="http://rafasp020689.byethost11.com/graphicSerie.php";
+		HttpEntity httpEntity=null;
+		
+		try {
+			DefaultHttpClient httpclient=new DefaultHttpClient();
+			HttpPost httpost=new HttpPost(url);
+			
+			List<NameValuePair> vlues=new ArrayList<NameValuePair>(2);
+			vlues.add(new BasicNameValuePair("host", this.host));
+			vlues.add(new BasicNameValuePair("username", this.username));
+			vlues.add(new BasicNameValuePair("password", this.password));
+			vlues.add(new BasicNameValuePair("port", ""+this.port));
+			vlues.add(new BasicNameValuePair("query", query));
+			vlues.add(new BasicNameValuePair("database", database));
+			vlues.add(new BasicNameValuePair("col", colum));
+			
+			httpost.setEntity(new UrlEncodedFormEntity(vlues));
+			
+			HttpResponse httpresponse=httpclient.execute(httpost);
+			httpEntity=httpresponse.getEntity();
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		JSONArray jsonarray=null;
+		
+		if (httpEntity!=null) {
+			try {
+				String entity=EntityUtils.toString(httpEntity);
+				jsonarray=new JSONArray(entity);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		} 
+
+		return jsonarray;
+	}
+
 
 }

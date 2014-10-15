@@ -35,8 +35,8 @@ public class EditActivity extends Activity {
 	public EditText description;
 	public Button btndatabase;
 	private long id;
-	public JSONObject databaseJSON=null;
 	public String nameserver="";
+	public String databaseJSON="";
 	public ArrayList<String> databaseList;
 	public int btnclick=0;
 	@Override
@@ -75,10 +75,8 @@ public class EditActivity extends Activity {
 					dialog.show(getFragmentManager(), "Alert field Empty");
 				}else{
 					try {
-						if (btnclick==1) {
-							Integer.parseInt(Sport);
-							v.showContextMenu();
-						}
+						Integer.parseInt(Sport);
+						dialogDatabase();
 					} catch (NumberFormatException e) {
 						AlertNumber numberalert=new AlertNumber();
 						numberalert.show(getFragmentManager(), "Alert Error field");
@@ -114,6 +112,7 @@ public class EditActivity extends Activity {
 			username.setText(""+datas.getString(4),TextView.BufferType.EDITABLE);
 			password.setText(""+datas.getString(5),TextView.BufferType.EDITABLE);
 			database.setText(""+datas.getString(6),TextView.BufferType.EDITABLE);	
+			description.setText(""+datas.getString(7),TextView.BufferType.EDITABLE);	
 		} catch (Exception e) {
 			message_Load();
 		}
@@ -163,7 +162,7 @@ public class EditActivity extends Activity {
 				portAux=Integer.parseInt(Sport);
 				boolean nameExist=dataDB.searchName(Sname);
 				String xname=name.getText().toString();
-				if(nameserver!=xname && nameExist==false){
+				if(nameserver.compareTo(xname)!=0 && nameExist==false){
 					message_Exist();
 				}else{
 					dataDB.updateRow(id, Sname, Shost, portAux, Susername, Spassword, Sdatabase, Sdescription);
@@ -186,6 +185,7 @@ public class EditActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
+				EditActivity.this.finish();
 			}
 		});
 		
@@ -290,23 +290,17 @@ public class EditActivity extends Activity {
 			return params[0].dataBaseAll();
 		}
 
-				@Override
+		@Override
 		protected void onPostExecute(JSONArray result) {
 			boolean resultado=setJsonArrayResultConection(result);
-			if(resultado==true){
-				progressDialog.dismiss();
-				try {
-					databaseJSON=result.getJSONObject(0);
-					btnclick=1;
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(resultado==true){
+					progressDialog.dismiss();
+					message_ConnectionOK();
 				}
-				message_ConnectionOK();
-			}
-			else{
-				progressDialog.dismiss();
-				message_ConnectionError();
-			}
+				else{
+					progressDialog.dismiss();
+					message_ConnectionError();
+				}
 		}			
 	}
 	
@@ -317,22 +311,26 @@ public class EditActivity extends Activity {
 				try {
 					objectJson=result.getJSONObject(0);
 					String title=objectJson.getString("Database");
+					//Log.e("valor x", title);
 					if ("MySQLError".equals(title) || "EmptyError".equals(title)) {
 						resultado=false;
 					}else{
 						database.setText("");
-						objectJson=null;
-						for (int i = 1; i < result.length(); i++) {
-							JSONObject objJSON=null;;
+						databaseList=new ArrayList<String>();
+						//Log.e("valor xzz", ""+result.length());
+						for (int i = 0; i < result.length(); i++) {
+							objectJson=null;;
 							try {
-								objJSON=result.getJSONObject(i);
-								String Databases=objJSON.getString("Database");
+								objectJson=result.getJSONObject(i);
+								String Databases=objectJson.getString("Database");
+								//Log.e("valor y", Databases);
 								databaseList.add(Databases);
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
 						}
-						
+						databaseJSON=title;
+						btnclick=1;
 						resultado=true;
 					}
 				} catch (JSONException e) {
@@ -340,12 +338,13 @@ public class EditActivity extends Activity {
 				}
 		}else{
 			resultado=false;
+			databaseJSON="";
 		}
 			
 		return resultado;
 	}
-	
-		@Override
+
+	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		database.setText(""+item.getTitle());
 		return super.onContextItemSelected(item);
@@ -357,9 +356,7 @@ public class EditActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (databaseJSON!=null ) {
 			database.setText("");
-			try {
-				String title=databaseJSON.getString("Database");
-				if("MySQLErrorData".equals(title)){
+			if("MySQLErrorData".equals(databaseJSON)){
 					DialogAlertMessage("Alerta!", "El servidor no contiene base de datos!");
 					database.setText("");
 				}else{
@@ -367,10 +364,7 @@ public class EditActivity extends Activity {
 						String Databases=databaseList.get(i);
 						menu.add(0, v.getId(), 0, Databases);
 					}					
-				}
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}			
+				}		
 		}else{
 			message_ConnectionError();
 		}
@@ -395,6 +389,43 @@ public class EditActivity extends Activity {
         builder.show();
 	}
 	
+	
+	public void dialogDatabase(){
+		AlertDialog.Builder builder=new AlertDialog.Builder(EditActivity.this);
+		builder.setTitle("Base de Datos");
+		if (databaseJSON.compareTo("")==0 && btnclick==0){
+			builder.setMessage("Por favor, realizar prueba de conexión con el servidor!");
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();				
+				}
+			});
+		}else{
+			database.setText("");
+			if(databaseList.isEmpty()){
+				builder.setMessage("El servidor no contiene base de datos!");
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();				
+					}
+				});
+			}else{
+				final String[] arrayBD=databaseList.toArray(new String[databaseList.size()]);
+				builder.setItems(arrayBD, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						database.setText(""+arrayBD[which]);
+						dialog.dismiss();
+					}
+				});					
+			}		
+		}
+		
+		builder.show();
+		
+	}
 
 
 }

@@ -37,6 +37,18 @@ public class DBAdapter {
 	public static final String KEY_DATABASE = "database";
 	public static final String KEY_DESCRIPTION = "description";
 	
+	// TODO: Setup your query here:
+	public static final String KEY_ID="_idserver";
+	
+	public static final int COL_ROWIDSERVER = 0;
+	
+	public static final String KEY_QUERY="query";
+	
+	public static final int COL_NAMES = 1;
+	public static final int COL_IDSERVER = 2;
+	public static final int COL_QUERYS = 3;
+	public static final int COL_DESCRIPTIONS = 4;
+	
 	// TODO: Setup your field numbers here (0 = KEY_ROWID, 1=...)
 	public static final int COL_NAME = 1;
 	public static final int COL_HOST = 2;
@@ -45,16 +57,19 @@ public class DBAdapter {
 	public static final int COL_PASSWORD = 5;
 	public static final int COL_DATABASE = 6;
 	public static final int COL_DESCRIPTION = 7;
+	
+	
 
 	
 	public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_NAME, KEY_HOST, KEY_PORT, KEY_USERNAME, KEY_PASSWORD, KEY_DATABASE, KEY_DESCRIPTION };
+	public static final String[] ALL_KEYSAVE= new String[] {KEY_ROWID, KEY_NAME, KEY_ID, KEY_QUERY, KEY_DESCRIPTION};
 	
 	// DB info: it's name, and the table we are using (just one).
 	public static final String DATABASE_NAME = "ServerINF";
 	public static final String DATABASE_TABLE = "dataServerTable";
 	public static final String DATABASE_TABLE2 = "SentenceTable";
 	// Track DB version if a new version of your app changes the format.
-	public static final int DATABASE_VERSION = 2;	
+	public static final int DATABASE_VERSION = 3;	
 	
 	
 	
@@ -67,6 +82,16 @@ public class DBAdapter {
 			+ KEY_USERNAME + " string not null, "
 			+ KEY_PASSWORD + " string, "
 			+ KEY_DATABASE + " string, "
+			+ KEY_DESCRIPTION + " string"
+			// Rest  of creation:
+			+ ");";
+	
+	private static final String DATABASE_CREATE_SQLSEnCE = 
+			"create table " + DATABASE_TABLE2 
+			+ " (" + KEY_ROWID + " integer primary key autoincrement, "
+			+ KEY_NAME + " string not null, "
+			+ KEY_ID + " integer not null, "
+			+ KEY_QUERY + " string not null, "
 			+ KEY_DESCRIPTION + " string"
 			// Rest  of creation:
 			+ ");";
@@ -98,7 +123,7 @@ public class DBAdapter {
 	}
 	
 	// Add a new set of values to the database.
-	public long insertRow(String name, String host, int port, String username, String password, String database, String description) {
+	public long insertRowServer(String name, int idx, String query, String description) {
 		/*
 		 * CHANGE 3:
 		 */		
@@ -107,21 +132,44 @@ public class DBAdapter {
 		// Create row's data:
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_NAME, name);
-		initialValues.put(KEY_HOST, host);
-		initialValues.put(KEY_PORT, port);
-		initialValues.put(KEY_USERNAME, username);
-		initialValues.put(KEY_PASSWORD, password);
-		initialValues.put(KEY_DATABASE,	database);
+		initialValues.put(KEY_ID, idx);
+		initialValues.put(KEY_QUERY, query);
 		initialValues.put(KEY_DESCRIPTION, description);
 		
 		// Insert it into the database.
-		return db.insert(DATABASE_TABLE, null, initialValues);
+		return db.insert(DATABASE_TABLE2, null, initialValues);
 	}
+	
+	// Add a new set of values to the database.
+		public long insertRow(String name, String host, int port, String username, String password, String database, String description) {
+			/*
+			 * CHANGE 3:
+			 */		
+			// TODO: Update data in the row with new fields.
+			// TODO: Also change the function's arguments to be what you need!
+			// Create row's data:
+			ContentValues initialValues = new ContentValues();
+			initialValues.put(KEY_NAME, name);
+			initialValues.put(KEY_HOST, host);
+			initialValues.put(KEY_PORT, port);
+			initialValues.put(KEY_USERNAME, username);
+			initialValues.put(KEY_PASSWORD, password);
+			initialValues.put(KEY_DATABASE,	database);
+			initialValues.put(KEY_DESCRIPTION, description);
+			
+			// Insert it into the database.
+			return db.insert(DATABASE_TABLE, null, initialValues);
+		}
 	
 	// Delete a row from the database, by rowId (primary key)
 	public boolean deleteRow(long rowId) {
 		String where = KEY_ROWID + "=" + rowId;
 		return db.delete(DATABASE_TABLE, where, null) != 0;
+	}
+	
+	public boolean deleteRowServer(long rowId) {
+		String where = KEY_ROWID + "=" + rowId;
+		return db.delete(DATABASE_TABLE2, where, null) != 0;
 	}
 	
 	public void deleteAll() {
@@ -150,6 +198,26 @@ public class DBAdapter {
 	public Cursor getRow(long rowId) {
 		String where = KEY_ROWID + "=" + rowId;
 		Cursor c = 	db.query(true, DATABASE_TABLE, ALL_KEYS, 
+						where, null, null, null, null, null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+		return c;
+	}
+	
+	public Cursor getRowServer(long rowId) {
+		String where = KEY_ROWID + "=" + rowId;
+		Cursor c = 	db.query(true, DATABASE_TABLE2, ALL_KEYSAVE, 
+						where, null, null, null, null, null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+		return c;
+	}
+	
+	public Cursor getAllRowServer(long rowId) {
+		String where = KEY_ID + "=" + rowId;
+		Cursor c = 	db.query(true, DATABASE_TABLE2, ALL_KEYSAVE, 
 						where, null, null, null, null, null);
 		if (c != null) {
 			c.moveToFirst();
@@ -225,6 +293,7 @@ public class DBAdapter {
 		@Override
 		public void onCreate(SQLiteDatabase _db) {
 			_db.execSQL(DATABASE_CREATE_SQL);
+			_db.execSQL(DATABASE_CREATE_SQLSEnCE);
 		}
 
 		@Override

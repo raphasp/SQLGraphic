@@ -2,7 +2,7 @@ package think.sqlgraphic;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
+//import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class sqldatabse {
@@ -31,6 +31,7 @@ public class sqldatabse {
 	
 	private BDHelper nHelper;
 	private final Context ncontext;
+	@SuppressWarnings("unused")
 	private SQLiteDatabase nDB;
 	
 	private static class BDHelper extends SQLiteOpenHelper{

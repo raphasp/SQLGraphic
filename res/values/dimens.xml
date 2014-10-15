@@ -9,6 +9,7 @@
     <dimen name="numberhost">8dp</dimen>
     <dimen name="margintop">10dp</dimen>
     <dimen name="marginbottom">20dp</dimen>
+    <dimen name="marginbt">10dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
 
 </resources>

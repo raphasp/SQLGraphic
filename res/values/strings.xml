@@ -18,6 +18,7 @@
     <string name="SQL">SQL</string>
     <string name="Graphic">Gráfica</string>
     <string name="SaveQuery">Guardar consulta.</string>
+    <string name="SettingGraph">Configurar gráfica</string>
     <string name="SaveGraph">Guardar gráfica.</string>
     <string name="UpdataQuery">Actualizar consulta.</string>
     <string name="Execute">Ejecutar consulta.</string>
@@ -32,7 +33,7 @@
     <string name="hostnumber">No.1</string>
     <string name="imgError">Error eliminar la base de datos de la lista.</string>
     <string name="imgErrorOK">Se elimino el servidor correctamente.</string>
-    <string name="title_activity_edit">Se editaron los datos del servidor correctamente.</string>
+    <string name="title_activity_edit">Editar Servidor</string>
     <string name="imgErrorUpdata">Error, al tratar de cargar los datos del servidor.</string>
     <string name="imgUpdataError">Error, al tratar de actualizar los datos del servidor.</string>
     <string name="imgOkUpdata">Actualización de los datos del servidor.</string>
@@ -66,4 +67,10 @@
 	</string-array>
 	<string name="Next">Siguiente</string>
 	<string name="After">Anterior</string>
+	<string name="NombreX">Nombre del eje X</string>
+	<string name="NombreY">Nombre del eje Y</string>
+	<string name="TitleG">Título de la gráfica</string>
+	<string name="namequery">Nombre de la consulta</string>
+	<string name="descriptionquery">Descripción de la consulta</string>
+	<string name="senquery">Consulta en SQL</string>
 </resources>
